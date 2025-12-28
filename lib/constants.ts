@@ -1,0 +1,11 @@
+export const SITE_NAME = 'Sachin — Dev Blog'
+export const SITE_TEMPLATE = '%s — Sachin'
+export const SITE_DESCRIPTION = 'Engineering notes, systems, and real-world code.'
+export const RSS_URL = '/rss.xml'
+export const NEW_POST_THRESHOLD_DAYS = 14
+export const COPY_TIMEOUT = 1200
+export const SITE_HEADER = 'Writing'
+export const SITE_INTRO = 'Notes on software engineering, systems, and things I learn while building.'
+export const DATE_FORMAT = 'MMMM d, yyyy'
+export const SITE_URL = 'https://sachinpasi.com'
+export const AUTHOR_NAME = 'Sachin Pasi'

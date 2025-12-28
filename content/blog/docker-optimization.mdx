@@ -1,0 +1,86 @@
+---
+title: "Mastering Docker Optimization: From 1GB to 50MB"
+date: 2025-12-28
+description: "Stop shipping bloatware. Learn how to use multi-stage builds and Alpine Linux to create production-ready images."
+tags: ['DevOps', 'Docker', 'Performance']
+---
+
+We've all been there. You write a simple Node.js app, run `docker build`, and suddenly you have a **1.2GB image**.
+
+Shipping large images slows down deployments, wastes bandwidth, and increases your attack surface.
+
+Here is how to fix it.
+
+## 1. The Naive Approach
+
+Reference a standard node image and copy everything.
+
+```dockerfile
+FROM node:20
+
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["npm", "start"]
+```
+
+**Result:** ~1.1GB. This includes the entire OS, build tools, and dev dependencies.
+
+## 2. Multi-Stage Builds
+
+The game changer. You use one "stage" to build your app and a second "stage" to run it.
+
+```dockerfile
+# Build Stage
+FROM node:20 AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Run Stage
+FROM node:20-slim
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+CMD ["node", "dist/index.js"]
+```
+
+**Result:** ~300MB. We discarded the build tools and source code, keeping only the artifacts.
+
+## 3. Alpine Linux
+
+To go even smaller, switch the base OS to Alpine Linux. It's a minimal distro (~5MB).
+
+```dockerfile
+FROM node:20-alpine
+...
+```
+
+**Result:** ~150MB.
+
+## 4. Layer Caching
+
+Docker caches layers. If a layer hasn't changed, it reuses it. Order matters!
+
+**Bad:**
+```dockerfile
+COPY . .
+RUN npm install
+```
+Every time you change code, you invalidate the `npm install` layer.
+
+**Good:**
+```dockerfile
+COPY package*.json ./
+RUN npm install
+COPY . .
+```
+Now, `npm install` only runs if dependencies change.
+
+## Conclusion
+
+By combining multi-stage builds, minimal base images, and smart layer caching, you can reduce your image size by **95%**.
+
+Your CI/CD pipeline (and your wallet) will thank you.

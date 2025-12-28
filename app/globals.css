@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f9fafb;
+  --text: #111111;
+  --muted: #666666;
+  --border: #e6e6e6;
+  --code-bg: #0f1115;
+  --dot-opacity: 0.6;
+  color-scheme: light;
+}
+
+/* Dark Mode Override */
+html.dark {
+  --bg: #0b0b0c;
+  --bg-soft: #111113;
+  --text: #e6e6e6;
+  --muted: #9a9a9a;
+  --border: #1f222a;
+  --code-bg: #0f1115;
+  --dot-opacity: 0.85;
+  color-scheme: dark;
+}
+
+/* Tailwind v4 dark mode variant */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-code-bg: var(--code-bg);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* Base styles */
+@layer base {
+  html {
+    @apply bg-bg text-text antialiased;
+  }
+
+  body {
+    @apply m-0 p-0 leading-relaxed font-sans;
+  }
+}
+
+/* Typography components */
+@layer components {
+
+  /* Headings */
+  h1,
+  h2,
+  h3 {
+    @apply font-medium tracking-tight text-text;
+  }
+
+  h1::after {
+    content: '';
+    @apply block w-10 h-px bg-border mt-4;
+  }
+
+  /* Links */
+  a {
+    @apply text-inherit no-underline border-b border-border transition-colors;
+  }
+
+  a:hover {
+    @apply border-text no-underline;
+    text-decoration-line: none;
+  }
+
+  /* Articles */
+  article {
+    @apply mt-8;
+  }
+
+  article p {
+    @apply mb-5 text-text;
+  }
+
+  code {
+    @apply font-mono;
+  }
+
+  hr {
+    @apply border border-border;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* Highlighted lines in code blocks */
+  .line--highlighted {
+    @apply bg-white/[0.06] -mx-5 px-5 block border-l-2 border-[#2b90ff];
+  }
+}
