@@ -7,7 +7,6 @@ const withMDX = createMDX({
 export default withMDX({
   pageExtensions: ['ts', 'tsx', 'mdx'],
   experimental: {
-    reactCompiler: true,
     optimizePackageImports: ['lodash', 'date-fns', 'lucide-react'],
   },
 })
