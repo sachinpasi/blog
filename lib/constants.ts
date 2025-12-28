@@ -7,5 +7,6 @@ export const COPY_TIMEOUT = 1200
 export const SITE_HEADER = 'Writing'
 export const SITE_INTRO = 'Notes on software engineering, systems, and things I learn while building.'
 export const DATE_FORMAT = 'MMMM d, yyyy'
-export const SITE_URL = 'https://sachinpasi.com'
+export const SITE_URL = 'https://blog.sachinpasi.com'
 export const AUTHOR_NAME = 'Sachin Pasi'
+export const DEFAULT_THEME = 'dark'
