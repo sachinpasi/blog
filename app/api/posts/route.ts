@@ -1,5 +1,5 @@
 import { getAllPosts } from '@/lib/mdx'
-import { SITE_URL } from '@/lib/site'
+import { SITE_URL } from '@/lib/constants'
 
 export async function GET() {
     const posts = getAllPosts().map((post) => ({

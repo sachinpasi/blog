@@ -45,8 +45,8 @@ export default async function BlogPost({ params }: PageProps) {
         notFound()
     }
 
-    const formattedDate = format(new Date(post.meta.date), DATE_FORMAT)
-    const tags = (post.meta.tags as string[]) || []
+    const formattedDate = format(post.meta.date, DATE_FORMAT)
+    const tags = post.meta.tags
 
 
     return (

@@ -83,8 +83,16 @@ html.dark {
     @apply mb-5 text-text;
   }
 
-  code {
-    @apply font-mono;
+  :not(pre)>code {
+    @apply font-mono text-xs px-1.5 py-0.5 rounded-md mx-0.5;
+    background-color: var(--bg-soft);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .dark :not(pre)>code {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   hr {
