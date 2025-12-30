@@ -1,0 +1,84 @@
+---
+title: "Really Understanding React Server Components"
+date: "2025-12-30"
+description: "RSCs are confusing. Here is my attempt at explaining them without the buzzwords, focusing on how they actually change the way we ship apps."
+tags: ["react", "nextjs", "architecture"]
+---
+
+I'll be honest: when React Server Components (RSC) were first announced, I didn't get it.
+
+It felt like we were just circling back to PHP. Only with more complexity and a compiler that I didn't fully understand. Why did we need *another* way to render components? Wasn't standard SSR enough?
+
+But after building with them for a few months, it finally clicked. And it’s not really about "performance" or "bundle size" (though those are nice). It's about the **mental model**.
+
+## The Data Problem
+
+In the "old" world (React 18 and earlier), if I wanted to fetch data for a specific component, I had two bad choices:
+
+1.  **Fetch at the top level** (getServerSideProps) and drill props down six layers.
+2.  **Fetch inside the component** (useEffect) and show a loading spinner while the browser creates a waterfall of network requests.
+
+Neither felt great.
+
+With RSCs, I can just... do this:
+
+```tsx
+// This runs on the server. No API endpoints. No useEffect.
+import { db } from '@/lib/db';
+
+export async function UserProfile({ userId }) {
+  // Direct database access inside a component?
+  // It felt wrong at first, but now I can't go back.
+  const user = await db.user.findUnique({ id: userId });
+
+  return (
+    <div className="p-6 border rounded-lg">
+      <h1 className="text-2xl font-bold">{user.name}</h1>
+      <p className="text-gray-500">{user.email}</p>
+    </div>
+  );
+}
+```
+
+That component is async. It waits for the DB. It renders HTML. And it sends **zero JavaScript** to the client. The browser doesn't even know `db` exists.
+
+## But... interactivity?
+
+This is where I tripped up. If everything is on the server, how do I make a button work?
+
+The answer is you simply acknowledge that *most* of your app isn't actually interactive. It's just content. The layout, the text, the images, the footer—it's static.
+
+For the bits that *do* need to dance (dropdowns, forms, counters), you carve out a little "client island" by adding `'use client'` at the top.
+
+```tsx
+'use client'; // This tells React: "Hydrate me in the browser"
+
+import { useState } from 'react';
+
+export function LikeButton() {
+  const [likes, setLikes] = useState(0);
+
+  return (
+    <button onClick={() => setLikes(l => l + 1)}>
+       👍 {likes}
+    </button>
+  );
+}
+```
+
+Then you just drop `<LikeButton />` into your server component.
+
+## It's not all sunshine
+
+Is it perfect? No.
+
+The tooling is still maturing. Debugging errors can sometimes be cryptic ("hydration mismatch" is my new nemesis). And knowing where the strict boundary lies between "server world" and "client world" takes some muscle memory.
+
+For instance, you can't pass a function (like an event handler) from a Server Component to a Client Component. Because you can't serialize a function over the network. Makes sense when you say it out loud, but it bites you when you're coding at 2 AM.
+
+## Final Thoughts
+
+RSCs aren't just an optimization. They let me delete so much code. I'm deleting API routes, I'm deleting `useEffect` hooks, I'm deleting state management libraries.
+
+I'm writing less code to do the same thing. And that, to me, is the definition of progress.
+
