@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sachin — Dev Blog
+
+> Engineering notes, systems, and real-world code.
+
+Personal engineering blog built with Next.js, MDX, and Tailwind CSS. Use this repository to track notes on software engineering, distributed systems, and learnings from building real-world applications.
+
+## Features
+
+- **MDX Support**: Write content in Markdown component support.
+- **Syntax Highlighting**: Code blocks highlighted using [Shiki](https://shiki.style/).
+- **Dark Mode**: Built-in dark mode support (default) using `next-themes`.
+- **RSS Feed**: Automatic RSS feed generation.
+- **Performance**: Optimized with Next.js App Router and React Server Components.
+
+## Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Language**: TypeScript
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Content**: MDX (`next-mdx-remote`, `gray-matter`)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Run development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the blog.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/`: Next.js App Router pages and layouts.
+- `components/`: Reusable React components (ThemeToggle, Tag, etc.).
+- `content/blog/`: MDX files for blog posts.
+- `lib/`: Utility functions and constants.
+- `public/`: Static assets.
 
-## Learn More
+## content
 
-To learn more about Next.js, take a look at the following resources:
+To add a new blog post, create a `.mdx` file in `content/blog/` with the following frontmatter:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```yaml
+---
+title: "Post Title"
+date: "2024-03-20"
+description: "Brief description of the post."
+tags: ["react", "nextjs"]
+---
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT © [Sachin Pasi](https://sachinpasi.com)
